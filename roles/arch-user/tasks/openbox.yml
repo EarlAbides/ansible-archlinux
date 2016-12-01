@@ -1,0 +1,42 @@
+---
+- name: install openbox and related packages (from repos)
+  pacman: name={{ item }} state=present
+  with_items:
+    - openbox
+    - obconf
+    - wmctrl
+    - xorg-xprop
+    - xterm
+    - xfce4-panel
+    - xfce4-screenshooter
+    - xfce4-notifyd
+    - xfce4-session
+    - file-roller
+    - xorg-xvinfo
+  become: yes
+
+- name: install related openbox packages (from aur)
+  command: "yaourt -S {{ item }} --noconfirm"
+  with_items:
+    - obkey
+    - obapps
+    - dmenu-xft-mouse-height-fuzzy-history
+    - zukitwo-themes-git
+
+- name: stow openbox config
+  command: "stow -d ~/dotfiles -t ~/ openbox"
+
+- name: download setlayout.c
+  get_url: url=http://openbox.org/dist/tools/setlayout.c dest=~/setlayout.c
+
+- name: compile setlayout.c
+  command: "gcc -o ~/.config/openbox/setlayout ~/setlayout.c -lX11"
+
+- name: remove setlayout.c
+  file: path=~/setlayout.c state=absent
+
+- name: install compton
+  command: "yaourt -S compton --noconfirm"
+
+- name: stow compton settings
+  command: "stow -d ~/dotfiles -t ~/ compton"

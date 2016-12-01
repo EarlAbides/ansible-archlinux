@@ -1,0 +1,54 @@
+---
+- name: install lightdm
+  pacman: name={{ item }} state=present
+  with_items:
+    - lightdm
+    - lightdm-gtk-greeter
+    - lxappearance
+    - arandr
+    - numlockx
+    - lxinput
+    - hicolor-icon-theme
+  become: yes
+
+- name: configure lightdm
+  lineinfile:
+    dest: /etc/lightdm/lightdm.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^greeter-session=', line: 'greeter-session=lightdm-gtk-greeter' }
+    - { regexp: '^greeter-setup-script=', line: 'greeter-setup-script=/usr/bin/numlockx on' }
+  become: yes
+
+- name: enable lightdm service
+  service: name=lightdm enabled=yes
+  become: yes
+
+- name: stow gui user settings
+  command: "stow -d ~/dotfiles -t {{ item.target }} {{ item.package }}"
+  with_items:
+    - { target: ~/, package: gtk3 }
+    - { target: ~/, package: icons }
+
+- name: stow "{{ archlinux_user_name }}" startup settings
+  command: "stow -d ~/dotfiles -t ~/ startup"
+
+- name: stow root startup settings
+  command: "stow -d /home/{{ archlinux_user_name }}/dotfiles -t /opt xdg-autostart"
+  become: yes
+
+- name: change lightdm session-setup-script
+  lineinfile:
+    dest: /etc/lightdm/lightdm.conf
+    regexp: '^session-setup-script='
+    line: 'session-setup-script=/opt/remove-xdg-autostart'
+  become: yes
+
+  # this task can take a while
+- name: install themes
+  command: "yaourt -S {{ item }} --noconfirm"
+  with_items:
+    - xcursor-human
+    - gnome-icon-theme-xfce
+    - gnome-colors-icon-theme

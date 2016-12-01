@@ -1,0 +1,10 @@
+---
+- name: install stow
+  pacman: name=stow state=present
+  become: yes
+
+- name: get my dotfiles
+  git:
+    accept_hostkey: yes
+    repo: "{{ dotfiles_git }}"
+    dest: ~/dotfiles

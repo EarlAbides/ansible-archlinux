@@ -1,0 +1,20 @@
+---
+- name: make sure the vim package is not installed
+  pacman: name=vim state=absent
+  become: yes
+
+- name: install gvim
+  pacman: name=gvim state=present
+  become: yes
+
+- name: stow vim configs
+  command: "stow -d ~/dotfiles -t ~/ vim"
+
+- name: install Vundle
+  git:
+    accept_hostkey: yes
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    dest: "~/.vim/bundle/Vundle.vim"
+
+- name: run Vundle plugin update
+  command: "/usr/bin/vim +PluginUpdate +qall!"

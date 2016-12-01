@@ -1,0 +1,11 @@
+- hosts: localhost
+  roles:
+    - arch-user
+
+  vars_prompt:
+    - name: "git_user_fullname"
+      prompt: "Enter your name (for gitconfig)"
+      private: no
+    - name: "git_user_email"
+      prompt: "Enter your email (for gitconfig)"
+      private: no

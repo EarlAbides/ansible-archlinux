@@ -1,0 +1,25 @@
+---
+- name: get xscreensaver-arch-logo package from aur
+  command: chdir=~ cower -d xscreensaver-arch-logo
+  become: yes
+  become_user: "{{ archlinux_user_name }}"
+
+- name: remove gdm dependency from PKGBUILD
+  replace: dest=~/xscreensaver-arch-logo/PKGBUILD regexp='\'gdm\'' replace=''
+  become: yes
+  become_user: "{{ archlinux_user_name }}"
+
+- name: install package
+  command: chdir=~/xscreensaver-arch-logo makepkg -si --noconfirm
+  become: yes
+  become_user: "{{ archlinux_user_name }}"
+
+- name: clean up xscreensaver-arch-logo installation
+  file: path=~/xscreensaver-arch-logo state=absent
+  become: yes
+  become_user: "{{ archlinux_user_name }}"
+
+- name: stow xscreensaver settings
+  command: "stow -d ~/dotfiles -t ~/ xscreensaver"
+  become: yes
+  become_user: "{{ archlinux_user_name }}"

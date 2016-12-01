@@ -1,0 +1,6 @@
+- name: install nvidia drivers
+  pacman: name={{ item }} state=present
+  with_items:
+    - nvidia
+    - nvidia-libgl
+  become: yes

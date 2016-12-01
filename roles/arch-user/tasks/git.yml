@@ -1,0 +1,13 @@
+---
+- name: install git
+  pacman: name=git state=present
+  become: yes
+
+- name: stow gitconfig
+  command: "stow -d ~/dotfiles -t ~/ git"
+
+- name: configure git user name as "{{ git_user_fullname }}"
+  command: "/usr/bin/git config --global user.name \"{{ git_user_fullname }}\""
+
+- name: configure git email as "{{ git_user_email }}"
+  command: "/usr/bin/git config --global user.email \"{{ git_user_email }}\""

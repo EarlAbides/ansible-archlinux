@@ -1,0 +1,6 @@
+---
+- name: install synaptics drivers
+  pacman: name={{ item }} state=present
+  with_items:
+    - xf86-input-synaptics
+  become: yes

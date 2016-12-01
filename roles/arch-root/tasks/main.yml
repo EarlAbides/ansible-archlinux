@@ -1,0 +1,7 @@
+---
+- include: pacman.yml
+- include: connman.yml
+- include: user.yml
+- include: sudo.yml
+- include: sysutils.yml
+- include: xorg.yml

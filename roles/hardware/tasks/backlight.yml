@@ -1,0 +1,6 @@
+---
+- name: Install backlight control
+  pacman: name={{ item }} state=present
+  with_items:
+    - xorg-xbacklight
+  become: yes

@@ -1,0 +1,36 @@
+- name: install utilities (browsers, file explorer, image viewer, etc) (from repos)
+  pacman: name={{ item }} state=present
+  with_items:
+    - firefox
+    # - chromium
+    - ffmpeg
+    - thunar
+    - thunar-volman
+    - thunar-archive-plugin
+    - gvfs
+    - vlc
+    - atom
+    - feh
+    # - viewnior
+    # - keepass
+    # - xdotool
+    - remmina # TBD, maybe replace with rdesktop
+    - xsel
+    - xbindkeys
+    - volumeicon
+  become: yes
+
+- name: install utilities (browsers, file explorer, image viewer, etc) (from aur)
+  command: "yaourt -S {{ item }} --noconfirm"
+  with_items:
+    - cmst
+    - copyq
+    # - chromium-widevine
+    # - light-git
+    - remmina-plugin-rdesktop # TBD, irrelevant if we use rdesktop
+    - volnoti
+
+- name: stow some utilities settings
+  command: "stow -d ~/dotfiles -t {{ item.target }} {{ item.package }}"
+  with_items:
+    - { target: ~/, package: copyq }

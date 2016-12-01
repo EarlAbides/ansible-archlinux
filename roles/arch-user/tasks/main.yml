@@ -1,0 +1,14 @@
+---
+- include: stow.yml
+- include: git.yml
+- include: devel.yml
+- include: vim.yml
+- include: aur.yml
+- include: fonts.yml
+- include: openbox.yml
+- include: gui.yml
+#- include: screensaver.yml
+- include: applications.yml
+- include: shell.yml
+- include: terminal.yml
+  #- include: acpi.yml

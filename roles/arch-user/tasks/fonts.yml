@@ -1,0 +1,31 @@
+---
+- name: enable infinality font repo
+  ini_file:
+    backup: yes
+    dest: /etc/pacman.conf
+    section: infinality-bundle
+    option: Server
+    value: 'http://bohoomil.com/repo/$arch'
+  become: yes
+
+- name: add infinality key
+  shell: "pacman-key -r {{ infinality_key_id }} && pacman-key --lsign-key {{ infinality_key_id }} && pacman -Syy"
+  become: yes
+
+- name: install fonts
+  pacman: name={{ item }} state=present force=yes
+  with_items:
+    - ttf-dejavu
+    - ttf-liberation
+    - ttf-droid
+    - ttf-inconsolata
+    - adobe-source-code-pro-fonts
+    - noto-fonts
+    - noto-fonts-emoji
+    - ttf-linux-libertine
+    - terminus-font
+  become: yes
+
+- name: install infinality
+  shell: yes|pacman -S fontconfig-infinality-ultimate freetype2-infinality-ultimate
+  become: yes
