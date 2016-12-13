@@ -1,27 +1,13 @@
 ---
-- name: install urxvt
-  command: "yaourt -S {{ item }} --noconfirm"
+- name: install urxvt and extras
+  pacman: name={{ item }} state=present
   with_items:
-    - rxvt-unicode-patched
-    - rxvt-unicode-terminfo
+    - rxvt-unicode
+    - tmux
+  become: yes
 
 - name: stow urxvt
   command: "stow -d ~/dotfiles -t ~/ urxvt"
 
 - name: set urxvt icon
   shell: "echo \"Urxvt*iconFile: /home/{{ archlinux_user_name }}/.local/share/icons/hicolor/128x128/apps/urxvt.png\" > ~/.config/Xresources/urxvt-icon"
-
-- name: install tmux
-  pacman: name=tmux state=present
-  become: yes
-
-- name: install tmux plugin manager
-  git:
-    accept_hostkey: yes
-    repo: https://github.com/tmux-plugins/tpm
-    dest: ~/.tmux/plugins/tpm
-
-- name: stow tmux
-  command: "stow -d ~/dotfiles -t ~/ tmux"
-  become: yes
-  become_user: "{{ archlinux_user_name }}"

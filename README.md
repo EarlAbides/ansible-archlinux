@@ -12,9 +12,7 @@ from the Arch wiki.
 ## Install ansible requirements
 On the fresh system, install the bare minimum to let Ansible take over.
 ```
-# pacman -S ansible python2-pip
-# pip2 install --upgrade pip
-# pip2 install passlib
+# pacman -S ansible python2-pip python2-passlib
 ```
 ## Run the playbooks
 Now that ansible is ready to go, there are two playbooks to bring the system to
