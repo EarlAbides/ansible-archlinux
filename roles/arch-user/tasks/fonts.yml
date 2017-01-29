@@ -1,4 +1,6 @@
 ---
+# TODO: remove infinality bundle from here
+# see: https://www.ostechnix.com/fix-harfbuzz-infinality-issue-arch-linux/
 - name: enable infinality font repo
   ini_file:
     backup: yes
